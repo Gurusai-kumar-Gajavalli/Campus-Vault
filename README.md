@@ -285,41 +285,12 @@ Base URL: `http://localhost:4000`
 
 ---
 
-## 📋 GCSRM Evaluation Checklist
-
-| Requirement | Status |
-|---|:---:|
-| Real database persistence (PostgreSQL) | ✅ |
-| Decoupled Node.js + Express.js REST API | ✅ |
-| Async state & multi-user mutations | ✅ |
-| Responsive, modern UI | ✅ |
-| Loading skeletons | ✅ |
-| Empty states | ✅ |
-| Network error handling & form validation | ✅ |
-| **Bonus:** Authentication & student profiles | ✅ |
-| **Bonus:** Author ownership — edit & delete | ✅ |
-| **Bonus:** Upvoting, sorting & filtering | ✅ |
-| **Bonus:** Full-text search (debounced) | ✅ |
-| **Bonus:** Zero-config demo mode | ✅ |
-
----
-
-## 🤝 Contributing
-
-This project is built for GCSRM 2026. Feel free to fork and experiment!
-
 1. Fork the repository
 2. Create your branch: `git checkout -b feature/your-feature`
 3. Commit changes: `git commit -m 'feat: add your feature'`
 4. Push: `git push origin feature/your-feature`
 5. Open a Pull Request
 
----
-
-## 📄 License
-
-Built with ❤️ for **GitHub Community SRM (GCSRM) Recruitment 2026**.  
-Open-source under the [MIT License](LICENSE).
 
 ---
 
@@ -354,25 +325,6 @@ Every single graduating batch takes irreplaceable institutional knowledge with i
 Today, this critical wisdom lives in ephemeral WhatsApp chats and word-of-mouth — and disappears the day seniors collect their degrees.
 
 **CampusVault** transforms this scattered knowledge into an immutable, searchable, crowdsourced campus repository. Seniors and alumni deposit battle-tested insights into topic vaults, while juniors discover, filter, upvote, and discuss with the authors.
-
----
-
-## 2. Evaluation Criteria & Feature Matrix
-
-| GCSRM Requirement | Status | Implementation Details |
-|---|:---:|---|
-| **Real Database Persistence** | ✅ Complete | Supabase PostgreSQL database with tables (`profiles`, `vaults`, `entries`, `votes`, `comments`) and joined views (`entries_with_votes`, `comments_with_author`). |
-| **Decoupled Node.js + Express API** | ✅ Complete | Express.js REST backend running on port 4000. All data reads and writes go through Express, enforcing server-side JWT verification and user ownership. |
-| **Asynchronous State & Multi-User Mutations** | ✅ Complete | Live toggleable upvoting, realtime comment threading, full CRUD with author-guarded edits and deletions. |
-| **Responsive Modern Interface** | ✅ Complete | Tailwind CSS design system with curated academic palette (deep forest moss, ivory parchment, stone borders, and glowing senior badges). |
-| **Loading Skeletons** | ✅ Complete | Custom shimmer pulse loading skeletons for vault cards, entry feeds, search results, and detail views (`<Skeleton />`). |
-| **Empty States** | ✅ Complete | Bespoke illustrated empty state cards with direct calls-to-action for unpopulated vaults or filtered views. |
-| **Network Errors & Form Validation** | ✅ Complete | Real-time field validation (min length, URL protocols), connection warning banners with retry buttons, and non-intrusive animated toasts. |
-| **Bonus: Authentication & Student Profiles** | ✅ Complete | Supabase Auth + Student profile metadata (Full Name, Batch Year `1st Year` to `Alumni`, and Branch `CSE-AIML`, `ECE`, etc.). |
-| **Bonus: User Ownership & Edit/Delete** | ✅ Complete | Only the original author can edit or delete their entries or comments (`isOwner` verified server-side). |
-| **Bonus: Upvoting & Filtering & Sorting** | ✅ Complete | Toggleable upvotes with optimistic UI updates. Vault feeds support sorting by **"Top Upvoted"** vs **"Newest First"**, and filtering by **"Seniors & Alumni Only"**. |
-| **Bonus: Full-Text Search** | ✅ Complete | Debounced live search querying entry titles and content across all vaults with instant result dropdown. |
-| **Bonus: Zero-Config Demo Mode** | ✅ Complete | Backend automatically detects missing Supabase keys and boots into an in-memory realistic seed store with 1-click evaluator test personas! |
 
 ---
 
@@ -610,7 +562,3 @@ Follow this 2-minute script for your submission recording:
 
 ---
 
-## 10. License
-
-Built with ❤️ for **GitHub Community SRM (GCSRM) Recruitment 2026**.
-All code is open-source under the MIT License.
