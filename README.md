@@ -529,36 +529,4 @@ When you are ready to connect a live Supabase PostgreSQL database:
 
 ---
 
-## 9. Walkthrough Video Script (Demonstrating Mutations)
-
-Follow this 2-minute script for your submission recording:
-
-1. **Introduction & Pitch (0:00 - 0:20):**
-   - Open the homepage: *"This is CampusVault, built for GCSRM Option A. It tackles student knowledge attrition by letting graduating seniors deposit interview debriefs and course lessons."*
-   - Highlight the 4 vaults, stats, and search bar.
-2. **Debounced Search (0:20 - 0:35):**
-   - Type `"Amazon"` in the search bar. Show the instant dropdown results showing Aarav Sharma's interview experience.
-3. **Vault Browsing & Filtering (0:35 - 0:50):**
-   - Click into the **Placements & Interviews** vault.
-   - Toggle between **"Top Upvoted"** and **"Newest First"**.
-   - Click **"Seniors & Alumni Only"** filter pill to show verified senior entries.
-4. **Authentication & Quick Personas (0:50 - 1:10):**
-   - Navigate to `/login`. Demonstrate the 1-click test persona: Click **"Aarav (4th Year)"**.
-   - Notice the dynamic Navbar showing Aarav's avatar, name, and **"4th Year"** badge.
-5. **Depositing Knowledge (1:10 - 1:30):**
-   - Click **"Deposit Knowledge"**.
-   - Fill in a new entry: *"Top 5 Electives for 3rd Year CSE students"*.
-   - Submit and show the instant redirect to the newly created entry.
-6. **Shared Data Mutations: Optimistic Upvote & Comments (1:30 - 1:50):**
-   - Toggle the **Upvote** button: Show the active state and animated vote count incrementing.
-   - Post a comment: *"Which elective did you find easiest to score an S grade in?"*
-   - Show the comment instantly appended with author badge and timestamp.
-7. **Author Ownership & Edit/Delete (1:50 - 2:05):**
-   - Show the **"Edit"** and **"Delete"** buttons visible to Aarav (the author).
-   - Edit the entry title, save, and show the updated view.
-8. **Conclusion (2:05 - 2:15):**
-   - Briefly open the Network tab to show requests hitting the custom Express API at `http://localhost:4000/api/entries` rather than direct database writes.
-   - Conclude on the tagline: *"Don't let student knowledge graduate."*
-
----
 
