@@ -1,10 +1,336 @@
-# CampusVault 🏛️
-> **"Don't let student knowledge graduate."**
+<div align="center">
 
-A production-grade, collaborative knowledge-preservation platform submitted for **GitHub Community SRM (GCSRM) Recruitment 2026 – Technical Track: Web Development (Year 2)**.
+# 🏛️ CampusVault
 
-**Track:** Option A — Build a Mini Collaborative App  
-**Tech Stack:** Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS, Node.js, Express.js, Supabase (PostgreSQL + Auth)
+### *"Don't let student knowledge graduate."*
+
+A production-grade, collaborative knowledge-preservation platform built for **GitHub Community SRM (GCSRM) Recruitment 2026 — Option A: Mini Collaborative App**.
+
+<br/>
+
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Express.js](https://img.shields.io/badge/Express.js-4-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+
+<br/>
+
+[🚀 Live Demo](#-live-demo) • [⚡ Quickstart](#-quickstart) • [🏗️ Architecture](#️-architecture) • [📖 API Reference](#-api-reference) • [🚢 Deployment](#-deployment)
+
+</div>
+
+---
+
+## 🎯 The Problem
+
+Every graduating batch takes irreplaceable institutional knowledge with it:
+
+- 📋 **Exact interview questions** from Amazon, Microsoft, and startups — lost to WhatsApp chats
+- 📚 **Course intel** — which electives are GPA boosters vs. traps, which professors are harsh in viva
+- 🏗️ **Capstone pitfalls** — architectural mistakes and bugs that took weeks to fix
+- 🏛️ **Campus secrets** — Wi-Fi spots, reading rooms, club networking shortcuts
+
+**CampusVault** transforms this scattered, ephemeral wisdom into an immutable, searchable, crowdsourced campus repository — so the next batch never starts from scratch.
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---|---|
+| 🗄️ **4 Topic Vaults** | Placements, Course Notes, Projects, Campus Life — structured knowledge categories |
+| 🔍 **Live Search** | Debounced cross-vault search with instant result dropdowns |
+| 🏅 **Author Badges** | Verified Senior (4th Year) & Alumni mentor badges with branch & year |
+| ⬆️ **Upvoting** | Optimistic toggleable upvotes with live count updates |
+| 💬 **Comments** | Threaded commenting with author identity on every reply |
+| ✍️ **Full CRUD** | Create, read, edit, and delete entries — owner-only enforced server-side |
+| 🔐 **Auth + Profiles** | Supabase Auth with student metadata (name, batch year, branch) |
+| 🔃 **Sort & Filter** | Sort by Top Upvoted / Newest First · Filter by Seniors & Alumni Only |
+| ⚡ **Zero-Config Demo** | Works instantly with no Supabase account — pre-seeded in-memory store |
+| 💀 **Loading Skeletons** | Shimmer pulse skeletons for every loading state |
+| ❌ **Empty States** | Illustrated empty states with clear calls-to-action |
+| 🛡️ **Error Handling** | Network banners, animated toasts, real-time form validation |
+
+---
+
+## 🚀 Live Demo
+
+> 🟡 Deploy your own instance using the [Deployment Guide](#-deployment) below.
+
+| Service | URL |
+|---|---|
+| 🌐 Frontend (Vercel) | *(Add your Vercel URL after deploying)* |
+| ⚙️ Backend API (Render) | *(Add your Render URL after deploying)* |
+| 📹 Demo Video | *(Add your walkthrough video link)* |
+
+---
+
+## 🏗️ Architecture
+
+CampusVault uses a clean, decoupled two-service architecture:
+
+```
+┌─────────────────────────────────────────────────────┐
+│         Browser — Next.js 14 (App Router)           │
+│  ┌─────────────┐  ┌───────────┐  ┌───────────────┐  │
+│  │  React UI   │  │ Supabase  │  │  API Client   │  │
+│  │ (Tailwind)  │  │Auth Client│  │ /lib/api.ts   │  │
+│  └──────┬──────┘  └─────┬─────┘  └──────┬────────┘  │
+└─────────┼───────────────┼───────────────┼────────────┘
+          │               │ Sign in / up  │ Bearer <JWT>
+          │         ┌─────▼──────┐        │
+          │         │  Supabase  │        │
+          │         │ GoTrue Auth│        │
+          │         └─────▲──────┘        │
+          │               │ Verify JWT    │
+┌─────────┼───────────────┼───────────────┼────────────┐
+│          Express.js API Server — Node.js (:4000)     │
+│                   ┌─────┴──────┐                     │
+│                   │    JWT     │◄────────────────────┘
+│                   │ Middleware │
+│                   └─────┬──────┘
+│              ┌──────────┴───────────┐
+│         ┌────▼─────┐          ┌─────▼──────┐         │
+│         │ /vaults  │          │ /entries   │         │
+│         │  Router  │          │   Router   │         │
+│         └────┬─────┘          └─────┬──────┘         │
+│              └──────────┬───────────┘                │
+│                   ┌─────▼──────────────────────┐     │
+│                   │   Supabase PostgreSQL DB    │     │
+│                   │  (RLS + Views + Triggers)   │     │
+│                   └─────────────────────────────┘     │
+│                          ↕ fallback (demo mode)       │
+│                   ┌─────────────────────────────┐     │
+│                   │  In-Memory Demo Store       │     │
+│                   │  (mockStore.js — no DB req) │     │
+│                   └─────────────────────────────┘     │
+└──────────────────────────────────────────────────────┘
+```
+
+**Why this architecture?**
+- **Separation of Concerns** — Next.js handles SSR/routing; Express handles business logic & auth enforcement
+- **Security** — The frontend **never** touches the service role key or talks to PostgreSQL directly
+- **Zero-Config Demo** — Backend auto-detects missing Supabase credentials and switches to mock mode
+
+---
+
+## 📁 Project Structure
+
+```
+Campus-Vault/
+│
+├── 📄 package.json              # Root scripts — runs dev concurrently
+├── 📄 .gitignore
+│
+├── 📂 backend/                  # Node.js + Express.js REST API
+│   ├── server.js                # App entrypoint, CORS, error handling
+│   ├── .env.example             # Environment variable template
+│   ├── middleware/
+│   │   └── auth.js              # JWT bearer token verification
+│   ├── routes/
+│   │   ├── vaults.js            # GET /api/vaults
+│   │   └── entries.js           # Entries CRUD, search, votes, comments
+│   └── lib/
+│       ├── supabaseAdmin.js     # Service-role Supabase client
+│       └── mockStore.js         # Pre-seeded demo data (zero-config mode)
+│
+├── 📂 frontend/                 # Next.js 14 (App Router + TypeScript)
+│   ├── middleware.ts            # Session refresh middleware
+│   ├── app/
+│   │   ├── layout.tsx           # Root layout — Navbar + Toast + Footer
+│   │   ├── page.tsx             # Home: hero, live search, vault grid
+│   │   ├── globals.css          # Design tokens, custom cards, animations
+│   │   ├── login/page.tsx       # Sign in / Sign up with test personas
+│   │   ├── vault/[slug]/
+│   │   │   ├── page.tsx         # Vault feed — sort tabs, senior filter
+│   │   │   └── new/
+│   │   │       ├── page.tsx     # Auth-gated deposit page
+│   │   │       └── NewEntryForm.tsx  # Entry form with real-time validation
+│   │   └── entry/[id]/
+│   │       └── page.tsx         # Full entry — voting, edit/delete, comments
+│   ├── components/
+│   │   ├── Navbar.tsx           # Sticky nav with live user avatar & badges
+│   │   ├── AuthorBadge.tsx      # Verified Senior / Alumni badge
+│   │   ├── Skeleton.tsx         # Shimmer loading skeletons
+│   │   ├── EmptyState.tsx       # Illustrated empty state component
+│   │   └── Toast.tsx            # Animated notification system
+│   └── lib/
+│       ├── api.ts               # Typed fetch wrapper with JWT attachment
+│       ├── supabaseClient.ts    # Browser Supabase auth client
+│       └── types.ts             # TypeScript models (Vault, Entry, Comment)
+│
+└── 📂 supabase/
+    └── schema.sql               # Tables, RLS policies, views, triggers
+```
+
+---
+
+## ⚡ Quickstart
+
+### Prerequisites
+- **Node.js** v18+
+- **npm** v9+
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/Gurusai-kumar-Gajavalli/Campus-Vault.git
+cd Campus-Vault
+
+# Installs root, backend, and frontend dependencies in one command:
+npm run install:all
+```
+
+### 2. Run in Zero-Config Demo Mode ✨
+
+No Supabase account needed! The backend auto-detects missing credentials and boots with realistic pre-seeded data.
+
+```bash
+npm run dev
+```
+
+| Service | URL |
+|---|---|
+| 🌐 Frontend | http://localhost:3000 |
+| ⚙️ Backend API | http://localhost:4000 |
+| 🏥 API Health Check | http://localhost:4000/api/health |
+
+---
+
+## 🗄️ Connecting Supabase (Live Mode)
+
+1. **Create a free project** at [supabase.com](https://supabase.com)
+
+2. **Run the schema** — open the SQL Editor and run the entire contents of [`supabase/schema.sql`](supabase/schema.sql)
+
+3. **Configure Backend:**
+   ```bash
+   cp backend/.env.example backend/.env
+   ```
+   ```env
+   SUPABASE_URL=https://your-project-id.supabase.co
+   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+   PORT=4000
+   FRONTEND_URL=http://localhost:3000
+   ```
+
+4. **Configure Frontend:**
+   ```bash
+   cp frontend/.env.local.example frontend/.env.local
+   ```
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   NEXT_PUBLIC_API_URL=http://localhost:4000
+   ```
+
+5. **Restart** `npm run dev` — both services automatically switch to Live Supabase Mode! 🚀
+
+---
+
+## 📖 API Reference
+
+Base URL: `http://localhost:4000`
+
+| Method | Endpoint | Auth | Description |
+|---|---|:---:|---|
+| `GET` | `/api/health` | — | Health check + active mode (`demo-mock` or `live-supabase`) |
+| `GET` | `/api/vaults` | — | List all vaults with entry counts |
+| `GET` | `/api/vaults/:slug` | — | Single vault metadata |
+| `GET` | `/api/entries?vault_id=&sort=&year=` | Optional | Vault entries — sort by `top`/`newest`, filter by year |
+| `GET` | `/api/entries/search?q=` | — | Cross-vault full-text search |
+| `GET` | `/api/entries/:id` | Optional | Entry detail with `hasVoted` & `isOwner` |
+| `POST` | `/api/entries` | ✅ | Create a new entry |
+| `PUT` | `/api/entries/:id` | ✅ Owner | Edit entry title, content, resource link |
+| `DELETE` | `/api/entries/:id` | ✅ Owner | Delete entry + related votes/comments |
+| `POST` | `/api/entries/:id/vote` | ✅ | Toggle upvote (atomic) |
+| `GET` | `/api/entries/:id/comments` | Optional | List comments with author profile |
+| `POST` | `/api/entries/:id/comments` | ✅ | Add a comment |
+| `DELETE` | `/api/entries/:id/comments/:commentId` | ✅ Owner | Delete a comment |
+
+---
+
+## 🚢 Deployment
+
+### Backend → Render / Railway
+
+1. Push repository to GitHub
+2. Create **New Web Service** on [Render](https://render.com) or [Railway](https://railway.app)
+3. Set **Root Directory** → `backend`
+4. **Build Command:** `npm install`
+5. **Start Command:** `npm start`
+6. Add **Environment Variables:** `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `FRONTEND_URL`, `PORT=4000`
+
+### Frontend → Vercel
+
+1. Import this repository on [Vercel](https://vercel.com)
+2. Set **Root Directory** → `frontend`
+3. Add **Environment Variables:** `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_API_URL`
+4. Click **Deploy** ✅
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Frontend** | Next.js 14 (App Router), React 18, TypeScript |
+| **Styling** | Tailwind CSS, Lucide Icons |
+| **Backend** | Node.js, Express.js 4 |
+| **Database** | Supabase (PostgreSQL), Row-Level Security |
+| **Auth** | Supabase GoTrue (JWT-based) |
+| **Dev Tools** | concurrently, dotenv, @supabase/ssr |
+
+---
+
+## 📋 GCSRM Evaluation Checklist
+
+| Requirement | Status |
+|---|:---:|
+| Real database persistence (PostgreSQL) | ✅ |
+| Decoupled Node.js + Express.js REST API | ✅ |
+| Async state & multi-user mutations | ✅ |
+| Responsive, modern UI | ✅ |
+| Loading skeletons | ✅ |
+| Empty states | ✅ |
+| Network error handling & form validation | ✅ |
+| **Bonus:** Authentication & student profiles | ✅ |
+| **Bonus:** Author ownership — edit & delete | ✅ |
+| **Bonus:** Upvoting, sorting & filtering | ✅ |
+| **Bonus:** Full-text search (debounced) | ✅ |
+| **Bonus:** Zero-config demo mode | ✅ |
+
+---
+
+## 🤝 Contributing
+
+This project is built for GCSRM 2026. Feel free to fork and experiment!
+
+1. Fork the repository
+2. Create your branch: `git checkout -b feature/your-feature`
+3. Commit changes: `git commit -m 'feat: add your feature'`
+4. Push: `git push origin feature/your-feature`
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+Built with ❤️ for **GitHub Community SRM (GCSRM) Recruitment 2026**.  
+Open-source under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+
+Made by **[Gurusai Kumar Gajavalli](https://github.com/Gurusai-kumar-Gajavalli)**
+
+⭐ **Star this repo** if you found it helpful!
+
+</div>
+
 
 ---
 
